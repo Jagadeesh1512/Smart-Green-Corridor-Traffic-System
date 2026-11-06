@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "author": "Antigravity Smart Green Corridor Team",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    
+    { "type": "wokwi-led", "id": "led_ew_red", "top": -120, "left": -100, "attrs": { "color": "red", "label": "EW Red" } },
+    { "type": "wokwi-led", "id": "led_ew_yellow", "top": -120, "left": -60, "attrs": { "color": "yellow", "label": "EW Yellow" } },
+    { "type": "wokwi-led", "id": "led_ew_green", "top": -120, "left": -20, "attrs": { "color": "green", "label": "EW Green" } },
+
+    { "type": "wokwi-led", "id": "led_ns_red", "top": -120, "left": 60, "attrs": { "color": "red", "label": "NS Red" } },
+    { "type": "wokwi-led", "id": "led_ns_yellow", "top": -120, "left": 100, "attrs": { "color": "yellow", "label": "NS Yellow" } },
+    { "type": "wokwi-led", "id": "led_ns_green", "top": -120, "left": 140, "attrs": { "color": "green", "label": "NS Green" } },
+
+    { "type": "wokwi-led", "id": "led_ped_red", "top": 160, "left": -90, "attrs": { "color": "red", "label": "PED Stop" } },
+    { "type": "wokwi-led", "id": "led_ped_green", "top": 160, "left": -50, "attrs": { "color": "green", "label": "PED Walk" } },
+
+    { "type": "wokwi-pushbutton", "id": "btn_standard", "top": 150, "left": 30, "attrs": { "color": "green", "label": "Standard Walk Call" } },
+    { "type": "wokwi-pushbutton", "id": "btn_elderly", "top": 150, "left": 130, "attrs": { "color": "blue", "label": "Elderly / Assist (+14s)" } },
+
+    { "type": "wokwi-buzzer", "id": "buzzer", "top": 60, "left": 230, "attrs": { "volume": "0.4" } },
+
+    { "type": "wokwi-resistor", "id": "r1", "top": -60, "left": -100, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r2", "top": -60, "left": -60, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r3", "top": -60, "left": -20, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r4", "top": -60, "left": 60, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r5", "top": -60, "left": 100, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r6", "top": -60, "left": 140, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r7", "top": 210, "left": -90, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r8", "top": 210, "left": -50, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:GND.1", "r1:1", "black", [ "v0" ] ],
+    [ "r1:1", "r2:1", "black", [ "h0" ] ],
+    [ "r2:1", "r3:1", "black", [ "h0" ] ],
+    [ "r3:1", "r4:1", "black", [ "h0" ] ],
+    [ "r4:1", "r5:1", "black", [ "h0" ] ],
+    [ "r5:1", "r6:1", "black", [ "h0" ] ],
+    [ "esp:GND.2", "r7:1", "black", [ "v0" ] ],
+    [ "r7:1", "r8:1", "black", [ "h0" ] ],
+    [ "esp:GND.2", "buzzer:2", "black", [ "v0" ] ],
+    [ "esp:GND.2", "btn_standard:1.l", "black", [ "v0" ] ],
+    [ "esp:GND.2", "btn_elderly:1.l", "black", [ "v0" ] ],
+
+    [ "r1:2", "led_ew_red:C", "black", [ "v0" ] ],
+    [ "r2:2", "led_ew_yellow:C", "black", [ "v0" ] ],
+    [ "r3:2", "led_ew_green:C", "black", [ "v0" ] ],
+    [ "r4:2", "led_ns_red:C", "black", [ "v0" ] ],
+    [ "r5:2", "led_ns_yellow:C", "black", [ "v0" ] ],
+    [ "r6:2", "led_ns_green:C", "black", [ "v0" ] ],
+    [ "r7:2", "led_ped_red:C", "black", [ "v0" ] ],
+    [ "r8:2", "led_ped_green:C", "black", [ "v0" ] ],
+
+    [ "esp:12", "led_ew_red:A", "red", [ "v0" ] ],
+    [ "esp:13", "led_ew_yellow:A", "gold", [ "v0" ] ],
+    [ "esp:14", "led_ew_green:A", "green", [ "v0" ] ],
+
+    [ "esp:25", "led_ns_red:A", "red", [ "v0" ] ],
+    [ "esp:26", "led_ns_yellow:A", "gold", [ "v0" ] ],
+    [ "esp:27", "led_ns_green:A", "green", [ "v0" ] ],
+
+    [ "esp:32", "led_ped_red:A", "red", [ "v0" ] ],
+    [ "esp:33", "led_ped_green:A", "green", [ "v0" ] ],
+
+    [ "esp:4", "buzzer:1", "purple", [ "v0" ] ],
+
+    [ "esp:18", "btn_standard:2.r", "green", [ "v0" ] ],
+    [ "esp:19", "btn_elderly:2.r", "blue", [ "v0" ] ]
+  ]
+}

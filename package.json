@@ -1,0 +1,29 @@
+{
+  "name": "smart-green-corridor",
+  "version": "1.0.0",
+  "description": "Smart Green-Corridor for Emergency Ambulances & Pedestrian Safety with Multi-Node Traffic Controller & Analytics",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/corridor.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mqtt": "^5.16.1",
+    "ws": "^8.16.0"
+  },
+  "keywords": [
+    "smart-city",
+    "green-corridor",
+    "ambulance-priority",
+    "pedestrian-safety",
+    "esp32",
+    "sumo",
+    "wokwi",
+    "traffic-control",
+    "websockets"
+  ],
+  "author": "Antigravity AI",
+  "license": "MIT"
+}

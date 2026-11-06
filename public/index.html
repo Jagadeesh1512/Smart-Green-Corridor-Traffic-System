@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Green-Corridor & Pedestrian Safety | Central Dispatch</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="min-h-screen bg-[#0a0e17] text-gray-100 flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-gray-800 bg-[#0d131f]/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-cyan-500 to-blue-600 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/20">
+          🚦
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-lg tracking-wide text-white">SMART GREEN-CORRIDOR</h1>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">COMMUNITY SAFETY</span>
+          </div>
+          <p class="text-xs text-gray-400">Emergency Ambulance Priority & Dynamic Pedestrian Crossing System</p>
+        </div>
+      </div>
+
+      <!-- Live Sync Status & Top Action Controls -->
+      <div class="flex items-center gap-3">
+        <button id="btnToggleSound" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-cyan-300 text-xs font-semibold border border-gray-700 transition" title="Toggle Pedestrian Audio Buzzer Sound">
+          <span>🔊</span> <span id="soundText">Audio: ON</span>
+        </button>
+
+        <div id="wsStatusPill" class="flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          SUB-SECOND SYNC ONLINE
+        </div>
+
+        <button id="btnDispatchAmbulance" class="px-4 py-2 rounded-lg bg-gradient-to-r from-rose-600 to-red-500 hover:from-rose-500 hover:to-red-400 text-white font-semibold text-xs shadow-lg shadow-rose-600/30 flex items-center gap-2 transition transform active:scale-95">
+          <span>🚑</span> DISPATCH CODE 3 AMBULANCE
+        </button>
+
+        <button id="btnResetAmbulance" class="px-3 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium text-xs border border-gray-700 transition">
+          Reset Depot
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto w-full px-6 py-6 flex-1 flex flex-col gap-6">
+
+    <!-- Social Impact KPI Strip -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <!-- KPI 1: Response Time Reduction -->
+      <div class="glass-panel p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/10 relative overflow-hidden">
+        <div class="text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1 flex items-center justify-between">
+          <span>Avg Response Time Saved</span>
+          <span class="text-emerald-400">⚡</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <div id="kpiReductionPercent" class="text-3xl font-extrabold text-emerald-300 glow-emerald">57.4%</div>
+          <div class="text-xs text-emerald-400/80 font-medium">Faster Transit</div>
+        </div>
+        <div class="text-[11px] text-gray-400 mt-1">Saves <span id="kpiTimeSaved" class="text-white font-bold">~84s</span> critical pre-hospital time</div>
+      </div>
+
+      <!-- KPI 2: Emergency Preemptions -->
+      <div class="glass-panel p-4 rounded-xl border border-blue-500/30 bg-blue-950/10 relative overflow-hidden">
+        <div class="text-xs font-semibold uppercase tracking-wider text-blue-400 mb-1 flex items-center justify-between">
+          <span>Emergency Runs Completed</span>
+          <span class="text-blue-400">🚑</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <div id="kpiTotalRuns" class="text-3xl font-extrabold text-blue-300 glow-cyan">18</div>
+          <div class="text-xs text-blue-400/80 font-medium">Preempted Runs</div>
+        </div>
+        <div class="text-[11px] text-gray-400 mt-1">100% collision-free green waves</div>
+      </div>
+
+      <!-- KPI 3: Pedestrian Assists -->
+      <div class="glass-panel p-4 rounded-xl border border-amber-500/30 bg-amber-950/10 relative overflow-hidden">
+        <div class="text-xs font-semibold uppercase tracking-wider text-amber-400 mb-1 flex items-center justify-between">
+          <span>Elderly / Disabled Assists</span>
+          <span class="text-amber-400">♿</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <div id="kpiElderlyAssists" class="text-3xl font-extrabold text-amber-300">28</div>
+          <div class="text-xs text-amber-400/80 font-medium">Crossings</div>
+        </div>
+        <div class="text-[11px] text-gray-400 mt-1">Dynamic Extra Time: <span id="kpiExtraSeconds" class="text-amber-300 font-bold">+392s</span> granted</div>
+      </div>
+
+      <!-- KPI 4: Crosswalk Safety Rate -->
+      <div class="glass-panel p-4 rounded-xl border border-cyan-500/30 bg-cyan-950/10 relative overflow-hidden">
+        <div class="text-xs font-semibold uppercase tracking-wider text-cyan-400 mb-1 flex items-center justify-between">
+          <span>Pedestrian Safety Index</span>
+          <span class="text-cyan-400">🛡️</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <div class="text-3xl font-extrabold text-cyan-300">100%</div>
+          <div class="text-xs text-cyan-400/80 font-medium">Zero Conflicts</div>
+        </div>
+        <div class="text-[11px] text-gray-400 mt-1">Dynamic radar holds active in community zone</div>
+      </div>
+    </div>
+
+    <!-- Section: Interactive Visual Corridor & Micro-Mobility Simulator -->
+    <div class="glass-panel p-5 rounded-2xl border border-gray-800">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <div>
+          <h2 class="font-bold text-sm text-white flex items-center gap-2">
+            <span>🗺️ LIVE ARTERIAL CORRIDOR SIMULATION</span>
+            <span class="text-xs font-normal text-gray-400">(Hospital Way Arterial: 1,350m St. Jude Depot to Memorial Hospital)</span>
+          </h2>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <span class="flex items-center gap-1.5 text-gray-300"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Approaching Beacon</span>
+          <span class="flex items-center gap-1.5 text-gray-300 ml-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Preemption Zone</span>
+          <span class="flex items-center gap-1.5 text-amber-300 ml-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Community Zone Crosswalk</span>
+        </div>
+      </div>
+
+      <!-- Canvas Simulator Container -->
+      <div class="relative w-full rounded-xl overflow-hidden border border-gray-800 bg-[#090d16] shadow-inner">
+        <canvas id="corridorCanvas" class="w-full block"></canvas>
+      </div>
+    </div>
+
+    <!-- Section: Emergency Vehicle Live Tracking & Manual Priority Overrides -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Ambulance Status & Telemetry Card -->
+      <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-sm text-white flex items-center gap-2">
+              <span>🚑</span> EMERGENCY TELEMETRY
+            </h3>
+            <span id="ambStatusBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-gray-700/50 text-gray-300 border border-gray-600">
+              STANDBY AT DEPOT
+            </span>
+          </div>
+
+          <!-- Vehicle details -->
+          <div class="space-y-3 text-xs mb-4">
+            <div class="flex justify-between py-1.5 border-b border-gray-800">
+              <span class="text-gray-400">Unit Call Sign:</span>
+              <span class="font-bold text-white">Medic Alpha (Code 3)</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-gray-800">
+              <span class="text-gray-400">Driver / Lead Paramedic:</span>
+              <span class="text-gray-200">Capt. R. Miller</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-gray-800">
+              <span class="text-gray-400">Instantaneous Speed:</span>
+              <span id="ambSpeedText" class="font-mono font-bold text-emerald-400 text-sm">0 km/h</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-gray-800">
+              <span class="text-gray-400">BLE Beacon Signal (RSSI):</span>
+              <span id="ambBeaconRssi" class="font-mono text-cyan-400">No Signal (Standby)</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-gray-800">
+              <span class="text-gray-400">Patient Emergency Status:</span>
+              <span class="font-semibold text-rose-400">Critical / Acute STEMI</span>
+            </div>
+          </div>
+
+          <!-- Progress Bar along Corridor -->
+          <div>
+            <div class="flex justify-between text-[11px] text-gray-400 mb-1">
+              <span>Corridor Transit Progress</span>
+              <span id="ambProgressPct" class="font-mono font-bold text-cyan-300">0% (0m / 1350m)</span>
+            </div>
+            <div class="w-full bg-gray-800 h-2.5 rounded-full overflow-hidden border border-gray-700">
+              <div id="ambProgressBar" class="h-full bg-gradient-to-r from-blue-500 via-cyan-400 to-rose-500 transition-all duration-100" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual Override Actions -->
+        <div class="mt-5 pt-4 border-t border-gray-800 flex gap-2">
+          <button id="btnForceGreen" class="flex-1 py-2 px-3 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 font-semibold text-xs border border-emerald-500/30 transition flex items-center justify-center gap-1.5">
+            <span>⚡</span> Force Green Wave
+          </button>
+          <button id="btnResetOverride" class="flex-1 py-2 px-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs border border-gray-700 transition">
+            Restore Auto-Cycle
+          </button>
+        </div>
+      </div>
+
+      <!-- Community Zone & Pedestrian Safety Center -->
+      <div class="glass-panel p-5 rounded-2xl border border-cyan-500/30 bg-cyan-950/5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-sm text-cyan-300 flex items-center gap-2">
+              <span>♿</span> COMMUNITY ZONE SAFETY CENTER
+            </h3>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              INT-3 (3rd St & St. Mary)
+            </span>
+          </div>
+
+          <p class="text-xs text-gray-300 leading-relaxed mb-4">
+            Located outside <strong class="text-white">St. Mary Senior Living & Community Center</strong>. 
+            Dynamically extends crossing intervals from 10s to <strong class="text-amber-400">24 seconds</strong> for elderly or mobility-impaired pedestrians, 
+            backed by real-time ultrasonic crosswalk clearance radar.
+          </p>
+
+          <!-- Interactive Test Panel -->
+          <div class="bg-black/30 p-3.5 rounded-xl border border-white/5 space-y-3 mb-4">
+            <div class="text-xs font-semibold text-gray-300 flex items-center justify-between">
+              <span>Simulated Crosswalk Inputs</span>
+              <span class="text-[10px] text-gray-400">Hardware Interrupts</span>
+            </div>
+
+            <div class="px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs flex items-center justify-between">
+              <span class="text-gray-400">Crosswalk Status:</span>
+              <span id="turnStatusBadge" class="font-bold text-amber-300">Ready</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <button id="btnElderlyAssist" class="py-2 px-3 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold border border-amber-500/40 transition flex items-center justify-center gap-1.5">
+                <span id="btnElderlyText">♿ Timed Walk Assist</span>
+              </button>
+              <button id="btnStandardPed" class="py-2 px-3 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium border border-gray-700 transition">
+                Standard Call (10s)
+              </button>
+            </div>
+
+            <!-- Ultrasonic Toggle -->
+            <label class="flex items-center justify-between p-2 rounded-lg bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition text-xs">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-medium text-gray-200">Ultrasonic Crosswalk Radar</span>
+                  <span id="radarStatusPill" class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">CLEAR (280cm)</span>
+                </div>
+                <div class="text-[10px] text-gray-400">Simulate slow walker still in crosswalk at zero seconds</div>
+              </div>
+              <input type="checkbox" id="toggleUltrasonic" class="w-4 h-4 rounded text-cyan-600 focus:ring-cyan-500 bg-gray-800 border-gray-700">
+            </label>
+
+            <!-- One-Click Demonstration Button -->
+            <button id="btnDemoRadarHold" class="w-full py-2 px-3 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold border border-rose-500/40 transition flex items-center justify-center gap-2 shadow-lg shadow-rose-950/20">
+              <span class="animate-pulse">🚨</span>
+              <span>Demonstrate Radar Hold (Slow Walker in Lane)</span>
+            </button>
+          </div>
+
+          <!-- Feature summary bullets -->
+          <div class="space-y-1.5 text-[11px] text-gray-400">
+            <div class="flex items-center gap-1.5">
+              <span class="text-emerald-400">✓</span> Audio buzzer pulses faster during elderly assist (2Hz)
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-emerald-400">✓</span> Emergency dynamic safety hold locks vehicle green until clear
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-gray-800 text-[11px] text-cyan-400/80">
+          *Compliant with Smart Community Safety Guidelines
+        </div>
+      </div>
+
+      <!-- Live Preemption & Safety Event Log -->
+      <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex flex-col">
+        <h3 class="font-bold text-sm text-white flex items-center justify-between mb-3">
+          <span class="flex items-center gap-2"><span>📜</span> AUDIT EVENT STREAM</span>
+          <span class="text-[10px] font-normal text-gray-400">Real-time log</span>
+        </h3>
+
+        <!-- Event logs container -->
+        <div id="eventLogsContainer" class="flex-1 overflow-y-auto max-h-[300px] space-y-2 pr-1">
+          <!-- Dynamically populated by analytics.js -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Section: Live 4-Intersection Hardware Controller Status -->
+    <div class="glass-panel p-5 rounded-2xl border border-gray-800">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="font-bold text-sm text-white flex items-center gap-2">
+            <span>🚥</span> MULTI-INTERSECTION TRAFFIC SIGNAL CONTROLLERS
+          </h2>
+          <p class="text-xs text-gray-400">Sub-second synchronization across all 4 signalized intersection nodes</p>
+        </div>
+        <div class="text-xs text-gray-400 flex items-center gap-2">
+          <span>ESP32 Telemetry Rate:</span>
+          <span class="font-mono text-emerald-400 font-bold">100ms</span>
+        </div>
+      </div>
+
+      <!-- 4 Intersections Grid -->
+      <div id="intersectionsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </div>
+
+    <!-- Section: Analytics & Social Impact Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Chart 1: Emergency Response Time Reduction -->
+      <div class="glass-panel p-5 rounded-2xl border border-gray-800">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h3 class="font-bold text-sm text-white flex items-center gap-2">
+              <span>📊</span> EMERGENCY RESPONSE TIME REDUCTION
+            </h3>
+            <p class="text-xs text-gray-400">Baseline Standard Traffic vs. Smart Green-Corridor Transit</p>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            ~57% REDUCTION
+          </span>
+        </div>
+        <div class="h-64 relative">
+          <canvas id="responseChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Pedestrian Safety & Assist Distribution -->
+      <div class="glass-panel p-5 rounded-2xl border border-gray-800">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h3 class="font-bold text-sm text-white flex items-center gap-2">
+              <span>🚶</span> PEDESTRIAN CROSSING DURATION ALLOCATION
+            </h3>
+            <p class="text-xs text-gray-400">Elderly Dynamic Extensions & Ultrasonic Radar Holds</p>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            COMMUNITY FIRST
+          </span>
+        </div>
+        <div class="h-64 relative">
+          <canvas id="pedestrianChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Section: Hardware Telemetry (Virtual & Wokwi ESP32 Nodes) -->
+    <div class="glass-panel p-5 rounded-2xl border border-gray-800 mb-8">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <h2 class="font-bold text-sm text-white flex items-center gap-2">
+            <span>⚙️</span> IOT & HARDWARE NODE TELEMETRY MONITOR
+          </h2>
+          <p class="text-xs text-gray-400">Real-time GPIO pin status, loop latencies, and Wokwi simulation integration</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a href="/hardware/wokwi/README.md" target="_blank" class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-medium border border-gray-700 transition flex items-center gap-1.5">
+            <span>📄</span> Wokwi Guide
+          </a>
+        </div>
+      </div>
+
+      <!-- Telemetry Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-gray-800 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+              <th class="py-2 px-3">Node ID</th>
+              <th class="py-2 px-3">MAC / IP</th>
+              <th class="py-2 px-3">Intersection Name</th>
+              <th class="py-2 px-3">Ping Latency</th>
+              <th class="py-2 px-3">WiFi RSSI</th>
+              <th class="py-2 px-3">Active GPIOs</th>
+            </tr>
+          </thead>
+          <tbody id="hardwareTableBody">
+            <!-- Dynamically populated by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800/80 bg-[#090d16] py-4 px-6 text-center text-xs text-gray-500">
+    Smart Green-Corridor & Pedestrian Safety Project • Node.js, WebSockets, Wokwi ESP32 & SUMO Mobility Engine
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="/js/corridorSimulator.js?v=7"></script>
+  <script src="/js/analytics.js?v=7"></script>
+  <script src="/js/app.js?v=7"></script>
+</body>
+</html>

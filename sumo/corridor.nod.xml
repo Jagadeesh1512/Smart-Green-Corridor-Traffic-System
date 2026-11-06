@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/nodes_file.xsd">
+    <!-- Arterial Hospital Corridor Endpoints -->
+    <node id="west_depot" x="0.0" y="200.0" type="priority"/>
+    <node id="east_hospital" x="1400.0" y="200.0" type="priority"/>
+
+    <!-- 4 Arterial Traffic Light Intersections -->
+    <node id="INT-1" x="250.0" y="200.0" type="traffic_light" tl="INT-1"/>
+    <node id="INT-2" x="600.0" y="200.0" type="traffic_light" tl="INT-2"/>
+    <node id="INT-3" x="950.0" y="200.0" type="traffic_light" tl="INT-3"/> <!-- Community Zone -->
+    <node id="INT-4" x="1250.0" y="200.0" type="traffic_light" tl="INT-4"/>
+
+    <!-- Cross Street Endpoints (North & South) -->
+    <node id="N1" x="250.0" y="400.0" type="priority"/>
+    <node id="S1" x="250.0" y="0.0" type="priority"/>
+
+    <node id="N2" x="600.0" y="400.0" type="priority"/>
+    <node id="S2" x="600.0" y="0.0" type="priority"/>
+
+    <node id="N3" x="950.0" y="400.0" type="priority"/>
+    <node id="S3" x="950.0" y="0.0" type="priority"/>
+
+    <node id="N4" x="1250.0" y="400.0" type="priority"/>
+    <node id="S4" x="1250.0" y="0.0" type="priority"/>
+</nodes>

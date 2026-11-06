@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edges xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/edges_file.xsd">
+    <!-- Arterial Corridor (Hospital Way Eastbound) -->
+    <edge id="corr_0_1" from="west_depot" to="INT-1" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_1_2" from="INT-1" to="INT-2" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_2_3" from="INT-2" to="INT-3" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_3_4" from="INT-3" to="INT-4" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_4_end" from="INT-4" to="east_hospital" numLanes="2" speed="16.67" allow="all"/>
+
+    <!-- Arterial Corridor (Hospital Way Westbound) -->
+    <edge id="corr_end_4" from="east_hospital" to="INT-4" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_4_3" from="INT-4" to="INT-3" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_3_2" from="INT-3" to="INT-2" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_2_1" from="INT-2" to="INT-1" numLanes="2" speed="16.67" allow="all"/>
+    <edge id="corr_1_0" from="INT-1" to="west_depot" numLanes="2" speed="16.67" allow="all"/>
+
+    <!-- Cross Street 1 (1st Ave) -->
+    <edge id="n1_to_int1" from="N1" to="INT-1" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="int1_to_s1" from="INT-1" to="S1" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="s1_to_int1" from="S1" to="INT-1" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="int1_to_n1" from="INT-1" to="N1" numLanes="1" speed="11.11" allow="all"/>
+
+    <!-- Cross Street 2 (Central Blvd) -->
+    <edge id="n2_to_int2" from="N2" to="INT-2" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="int2_to_s2" from="INT-2" to="S2" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="s2_to_int2" from="S2" to="INT-2" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="int2_to_n2" from="INT-2" to="N2" numLanes="1" speed="11.11" allow="all"/>
+
+    <!-- Cross Street 3 (Community Center / Senior Living - Community Zone) -->
+    <edge id="n3_to_int3" from="N3" to="INT-3" numLanes="1" speed="8.33" allow="all"/>
+    <edge id="int3_to_s3" from="INT-3" to="S3" numLanes="1" speed="8.33" allow="all"/>
+    <edge id="s3_to_int3" from="S3" to="INT-3" numLanes="1" speed="8.33" allow="all"/>
+    <edge id="int3_to_n3" from="INT-3" to="N3" numLanes="1" speed="8.33" allow="all"/>
+
+    <!-- Cross Street 4 (Civic Gate) -->
+    <edge id="n4_to_int4" from="N4" to="INT-4" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="int4_to_s4" from="INT-4" to="S4" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="s4_to_int4" from="S4" to="INT-4" numLanes="1" speed="11.11" allow="all"/>
+    <edge id="int4_to_n4" from="INT-4" to="N4" numLanes="1" speed="11.11" allow="all"/>
+</edges>
